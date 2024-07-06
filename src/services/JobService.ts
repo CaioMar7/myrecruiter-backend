@@ -1,11 +1,12 @@
 import { JobRepository } from "../repositories/JobRepository"
 
+
 export class JobService {
 
-    create(){
+    create(id: number){
         const repository = new JobRepository()
 
-        return repository.create()
+        return repository.create(id)
     }
 
     findAll(){
@@ -14,10 +15,10 @@ export class JobService {
         return repository.findAll()
     }
 
-    findById(){
+    findById(id: number){
         const repository = new JobRepository()
 
-        return repository.findById()
+        return repository.findById(id)
     }
 
     update(){

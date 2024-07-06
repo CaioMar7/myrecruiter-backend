@@ -1,15 +1,15 @@
 export class JobRepository {
 
-    create(){
-        return {message: "Criado no banco de dados"}
+    create(id: number){
+        return {message: `Criado no banco de dados o registro com o ID: ${id}.`}
     }
 
     findAll(){
         return {message: "Todos os registros do banco de dados"}
     }
 
-    findById(){
-        return {message: "Registro pelo Id do banco de dados"}
+    findById(id: number){
+        return {message: `Registro pelo ${id} do banco de dados`}
     }
 
     update(){

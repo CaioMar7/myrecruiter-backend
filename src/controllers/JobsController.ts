@@ -4,9 +4,11 @@ import { JobService } from "../services/JobService";
 export class JobsController {
     async create(request: Request, response: Response) {
 
+        const { id } = request.params
+
         const jobService = new JobService
 
-        response.send(jobService.create())
+        response.send(jobService.create(parseInt(id)))
     }
 
     async findAll(request: Request, response: Response) {
@@ -18,9 +20,11 @@ export class JobsController {
 
     async findById(request: Request, response: Response) {
 
+        const { id } = request.params
+
         const jobService = new JobService
 
-        response.send(jobService.findById())
+        response.send(jobService.findById(parseInt(id)))
     }
 
     async update(request: Request, response: Response) {
