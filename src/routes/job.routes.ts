@@ -6,8 +6,11 @@ const jobsRoutes = Router()
 
 const jobsController = new JobsController()
 
-jobsRoutes.get("/", jobsController.handle)
 jobsRoutes.get("/create", jobsController.create)
+jobsRoutes.get("/findAll", jobsController.findAll)
+jobsRoutes.get("/findById", jobsController.findById)
+jobsRoutes.get("/update", jobsController.update)
+jobsRoutes.get("/delete", jobsController.delete)
 
 module.exports = jobsRoutes
 
