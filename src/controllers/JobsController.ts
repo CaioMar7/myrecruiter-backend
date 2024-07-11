@@ -1,14 +1,14 @@
 import { Request, Response } from "express";
-import { JobService } from "../services/JobService";
+import { IJobService, JobService } from "../services/JobService";
 
 export class JobsController {
     async create(request: Request, response: Response) {
 
-        const { id } = request.params
+        const { title, description } = request.body as IJobService
 
         const jobService = new JobService
 
-        response.send(jobService.create(parseInt(id)))
+        response.send(jobService.create({title, description}))
     }
 
     async findAll(request: Request, response: Response) {
@@ -29,9 +29,11 @@ export class JobsController {
 
     async update(request: Request, response: Response) {
 
+        const { title, description } = request.body
+
         const jobService = new JobService
 
-        response.send(jobService.update())
+        response.send(jobService.update({ title, description }))
     }
 
     async delete(request: Request, response: Response) {

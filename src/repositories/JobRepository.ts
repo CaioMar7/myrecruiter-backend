@@ -1,23 +1,37 @@
+import { prismaClient } from "../database/prisma"
+import { IJobService } from "../services/JobService"
+
 export class JobRepository {
 
-    create(id: number){
-        return {message: `Criado no banco de dados o registro com o ID: ${id}.`}
+     create({ title, description }: IJobService){
+        const createdJob = prismaClient.job.create({
+            data : {
+                title,
+                description
+            }
+        })
+
+        return {title, description}
     }
 
-    findAll(){
-        return {message: "Todos os registros do banco de dados"}
+    findAll(): IJobService[] {
+        return [
+            {id: 1, title: "exemplo", description: "teste"},
+            {id: 2, title: "exemplo", description: "teste"},
+            {id: 3, title: "exemplo", description: "teste"}
+        ]
     }
 
-    findById(id: number){
-        return {message: `Registro pelo ${id} do banco de dados`}
+    findById(id: number): IJobService {
+        return {id, title: "exemplo", description: "teste"}
     }
 
-    update(){
-        return {message: "Atualizado no banco de dados"}
+    update({title, description} : IJobService) {
+        return { message: `Titulo: XXXX - Descrição : XXXX, alterado para Título: ${title} - Descrição: ${description}` }
     }
 
-    delete(){
-        return {message: "Deletado do banco de dados"}
+    delete() {
+        return { message: "Deletado do banco de dados" }
     }
 
 }
