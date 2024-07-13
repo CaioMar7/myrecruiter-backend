@@ -71,7 +71,6 @@ export class JobsController {
             response.status(400).send({ message: "Nenhum usuário encontrado com esse ID." })
         }
 
-
     }
 
 }
