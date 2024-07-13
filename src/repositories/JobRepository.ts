@@ -4,14 +4,14 @@ import { IJobService } from "../services/JobService"
 export class JobRepository {
 
     async create({ title, description }: IJobService) {
-        const createdJob = await prismaClient.job.create({
+        await prismaClient.job.create({
             data: {
                 title,
                 description
             }
         })
 
-        return { createdJob }
+        return { title, description }
     }
 
     async findAll(): Promise<IJobService[]> {
@@ -28,7 +28,7 @@ export class JobRepository {
                 id
             }
         })
-
+        
         return jobById!
     }
 

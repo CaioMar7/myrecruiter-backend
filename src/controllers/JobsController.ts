@@ -7,9 +7,18 @@ export class JobsController {
         const { title, description } = request.body as IJobService
 
         const jobService = new JobService
-        jobService.create({title, description})
 
-        response.status(201).send({title, description})
+        if (!title) {
+            return response.status(400).send({ message: "Um titulo precisa ser enviado." })
+        }
+
+        try {
+            jobService.create({ title, description })
+            response.status(201).send({ title, description })
+        } catch (error) {
+            response.status(400).json(error)
+        }
+
     }
 
     async findAll(request: Request, response: Response) {
@@ -27,9 +36,13 @@ export class JobsController {
 
         const jobService = new JobService
 
-        const jobById = await jobService.findById(id)
+        try {
+            const jobById = await jobService.findById(id)
+            response.send(jobById)
+        } catch (error) {
+            response.status(400).send({ message: "Nenhum usuário encontrado com esse ID." })
+        }
 
-        response.send(jobById)
     }
 
     async update(request: Request, response: Response) {
@@ -49,7 +62,16 @@ export class JobsController {
 
         const jobService = new JobService
 
-        response.send(jobService.delete(id))
+        try {
+            const jobById = await jobService.findById(id)
+            if(jobById) {
+                response.send(jobService.delete(id))
+            }
+        } catch (error) {
+            response.status(400).send({ message: "Nenhum usuário encontrado com esse ID." })
+        }
+
+
     }
 
 }
