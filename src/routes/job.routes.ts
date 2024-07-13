@@ -10,7 +10,7 @@ jobsRoutes.post("/create", jobsController.create)
 jobsRoutes.get("/", jobsController.findAll)
 jobsRoutes.get("/show/:id", jobsController.findById)
 jobsRoutes.put("/update", jobsController.update)
-jobsRoutes.delete("/delete", jobsController.delete)
+jobsRoutes.delete("/delete/:id", jobsController.delete)
 
 module.exports = jobsRoutes
 

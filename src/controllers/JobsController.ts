@@ -7,15 +7,18 @@ export class JobsController {
         const { title, description } = request.body as IJobService
 
         const jobService = new JobService
+        jobService.create({title, description})
 
-        response.send(jobService.create({title, description}))
+        response.status(201).send({title, description})
     }
 
     async findAll(request: Request, response: Response) {
 
         const jobService = new JobService
 
-        response.send(jobService.findAll())
+        const allJobs = await jobService.findAll()
+
+        response.send(allJobs)
     }
 
     async findById(request: Request, response: Response) {
@@ -24,23 +27,29 @@ export class JobsController {
 
         const jobService = new JobService
 
-        response.send(jobService.findById(parseInt(id)))
+        const jobById = await jobService.findById(id)
+
+        response.send(jobById)
     }
 
     async update(request: Request, response: Response) {
 
-        const { title, description } = request.body
+        const { id, title, description } = request.body
 
         const jobService = new JobService
 
-        response.send(jobService.update({ title, description }))
+        const jobToUpdate = await jobService.update({ id, title, description })
+
+        response.send(jobToUpdate)
     }
 
     async delete(request: Request, response: Response) {
 
+        const { id } = request.params
+
         const jobService = new JobService
 
-        response.send(jobService.delete())
+        response.send(jobService.delete(id))
     }
 
 }

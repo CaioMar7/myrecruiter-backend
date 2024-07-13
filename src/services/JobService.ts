@@ -1,45 +1,59 @@
 import { JobRepository } from "../repositories/JobRepository"
 
 export interface IJobService {
-    id?: number,
+    id?: string,
     title: string,
     description: string
 }
 
 export class JobService {
 
-    create({ title, description }: IJobService){
+    create({ title, description }: IJobService) {
         const repository = new JobRepository()
-        
-        if(!title || !description) {
+
+        if (!title || !description) {
             throw new Error("Todos os campos precisam ser preenchidos.")
         }
 
         return repository.create({ title, description })
     }
 
-    findAll(): IJobService[]{
+    findAll(): Promise<IJobService[]> {
         const repository = new JobRepository()
 
-        return repository.findAll()
+        const allJobs = repository.findAll()
+
+        return allJobs
     }
 
-    findById(id: number): IJobService{
+    findById(id: string): Promise<IJobService> {
         const repository = new JobRepository()
 
-        return repository.findById(id)
+        const jobById = repository.findById(id)
+
+        return jobById
     }
 
-    update({ title, description }: IJobService) {
+    update({ id, title, description }: IJobService) {
         const repository = new JobRepository()
 
-        return repository.update({title, description})
+        if (!id) {
+            throw new Error("Um ID precisa ser enviado.")
+        }
+
+        if (!title) {
+            throw new Error("Um título precisa ser enviado.")
+        }
+
+        const jobToUpdate = repository.update({ id, title, description })
+
+        return jobToUpdate
     }
 
-    delete() {
+    delete(id: string) {
         const repository = new JobRepository()
 
-        return repository.delete()
+        return repository.delete(id)
     }
 
 }

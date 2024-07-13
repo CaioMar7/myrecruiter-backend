@@ -3,35 +3,62 @@ import { IJobService } from "../services/JobService"
 
 export class JobRepository {
 
-     create({ title, description }: IJobService){
-        const createdJob = prismaClient.job.create({
-            data : {
+    async create({ title, description }: IJobService) {
+        const createdJob = await prismaClient.job.create({
+            data: {
                 title,
                 description
             }
         })
 
-        return {title, description}
+        return { createdJob }
     }
 
-    findAll(): IJobService[] {
-        return [
-            {id: 1, title: "exemplo", description: "teste"},
-            {id: 2, title: "exemplo", description: "teste"},
-            {id: 3, title: "exemplo", description: "teste"}
-        ]
+    async findAll(): Promise<IJobService[]> {
+
+        const listJob = await prismaClient.job.findMany() as IJobService[]
+
+        return listJob
     }
 
-    findById(id: number): IJobService {
-        return {id, title: "exemplo", description: "teste"}
+    async findById(id: string): Promise<IJobService> {
+
+        const jobById = await prismaClient.job.findFirst({
+            where: {
+                id
+            }
+        })
+
+        return jobById!
     }
 
-    update({title, description} : IJobService) {
-        return { message: `Titulo: XXXX - Descrição : XXXX, alterado para Título: ${title} - Descrição: ${description}` }
+    async update({ id, title, description }: IJobService) {
+
+        const updatedJob = {
+            title,
+            description,
+            updated_at: new Date()
+        }
+
+        const updateJob = await prismaClient.job.update({
+            where: {
+                id
+            }, data: updatedJob
+        })
+
+        return updateJob
+
     }
 
-    delete() {
-        return { message: "Deletado do banco de dados" }
+    async delete(id: string) {
+
+        const jobById = await prismaClient.job.delete({
+            where: {
+                id
+            }
+        })
+
+        return jobById!
     }
 
 }
