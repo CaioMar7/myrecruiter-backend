@@ -1,5 +1,5 @@
 import { JobRepository } from "../repositories/JobRepository"
-import { AppError } from "../utils/AppError"
+import { AppError } from "../utils/AppErrors"
 
 export interface IJobService {
     id?: string,
@@ -13,11 +13,11 @@ export class JobService {
         const repository = new JobRepository()
 
         if (title.length <= 4) {
-            throw new AppError("O titulo da vaga precisa possuir mais de 4 caracteres")
+            throw new AppError("O titulo da vaga precisa possuir mais de 4 caracteres", 401)
         }
 
         if (title.length >= 70) {
-            throw new AppError("O titulo da vaga não pode possuir mais de 70 caracteres")
+            throw new AppError("O titulo da vaga não pode possuir mais de 70 caracteres", 400)
         }
 
         return repository.create({ title, description })
