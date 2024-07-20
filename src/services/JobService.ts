@@ -13,7 +13,7 @@ export class JobService {
         const repository = new JobRepository()
 
         if (title.length <= 4) {
-            throw new AppError("O titulo da vaga precisa possuir mais de 4 caracteres", 401)
+            throw new AppError("O titulo da vaga precisa possuir mais de 4 caracteres", 400)
         }
 
         if (title.length >= 70) {
@@ -43,11 +43,11 @@ export class JobService {
         const repository = new JobRepository()
 
         if (!id) {
-            throw new Error("Um ID precisa ser enviado.")
+            throw new AppError("Um ID precisa ser enviado.", 400)
         }
 
         if (!title) {
-            throw new Error("Um título precisa ser enviado.")
+            throw new AppError("Um título precisa ser enviado.", 400)
         }
 
         const jobToUpdate = repository.update({ id, title, description })
