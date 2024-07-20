@@ -43,13 +43,16 @@ export class JobsController {
 
     async update(request: Request, response: Response, next: NextFunction) {
 
-        const { id, title, description } = request.body
+        const { id, title, description } = request.body as IJobService;
 
         const jobService = new JobService
 
-        const jobToUpdate = await jobService.update({ id, title, description })
-
-        response.send(jobToUpdate)
+        try {
+            const updateJobById = await jobService.update({ id, title, description })
+            response.send(updateJobById)
+        } catch (error) {
+            next(error)
+        }
     }
 
     async delete(request: Request, response: Response, next: NextFunction) {

@@ -48,30 +48,33 @@ export class JobService {
     update({ id, title, description }: IJobService) {
         const repository = new JobRepository()
 
-        if (!id) {
-            throw new AppError("Um ID precisa ser enviado.", 400)
+        if ( id && id.length != 24) {
+            throw new AppError("Um ID válido precisa ser enviado.", 400)
         }
 
-        if (!title) {
-            throw new AppError("Um título precisa ser enviado.", 400)
+        if (title.length <= 4) {
+            throw new AppError("Um título válido precisa ser enviado.", 400)
         }
 
-        const jobToUpdate = repository.update({ id, title, description })
+        const findUserToUpdate = this.findById(id!).
+        then(() => {
+            return repository.update({ id, title, description })
+        })
 
-        return jobToUpdate
+        return findUserToUpdate
     }
 
     delete(id: string) {
         const repository = new JobRepository()
 
-        if(id.length < 23) {
+        if (id.length < 24) {
             throw new AppError("Um ID válido precisa ser enviado.", 400)
         }
 
         const findUser = this.findById(id)
-        .then((user) => {
-            return repository.delete(user.id!)
-        })
+            .then((user) => {
+                return repository.delete(user.id!)
+            })
 
         return findUser
     }
