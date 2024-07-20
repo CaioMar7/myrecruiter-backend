@@ -35,6 +35,12 @@ export class JobService {
         const repository = new JobRepository()
 
         const jobById = repository.findById(id)
+            .then((job) => {
+                if (!job) {
+                    throw new AppError("Nenhum usuário não encontrado com esse ID.", 400)
+                }
+                return job
+            })
 
         return jobById
     }
@@ -58,7 +64,16 @@ export class JobService {
     delete(id: string) {
         const repository = new JobRepository()
 
-        return repository.delete(id)
+        if(id.length < 23) {
+            throw new AppError("Um ID válido precisa ser enviado.", 400)
+        }
+
+        const findUser = this.findById(id)
+        .then((user) => {
+            return repository.delete(user.id!)
+        })
+
+        return findUser
     }
 
 }

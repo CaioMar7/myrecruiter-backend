@@ -17,7 +17,7 @@ export class JobsController {
 
     }
 
-    async findAll(request: Request, response: Response) {
+    async findAll(request: Request, response: Response, next: NextFunction) {
 
         const jobService = new JobService
 
@@ -26,7 +26,7 @@ export class JobsController {
         response.send(allJobs)
     }
 
-    async findById(request: Request, response: Response) {
+    async findById(request: Request, response: Response, next: NextFunction) {
 
         const { id } = request.params
 
@@ -34,19 +34,14 @@ export class JobsController {
 
         try {
             const jobById = await jobService.findById(id)
-
-            if(!jobById) {
-                console.error("Nenhum usuário encontrado.")
-            }
-
             response.send(jobById)
         } catch (error) {
-            response.send(error)
+            next(error)
         }
 
     }
 
-    async update(request: Request, response: Response) {
+    async update(request: Request, response: Response, next: NextFunction) {
 
         const { id, title, description } = request.body
 
@@ -57,22 +52,21 @@ export class JobsController {
         response.send(jobToUpdate)
     }
 
-    async delete(request: Request, response: Response) {
+    async delete(request: Request, response: Response, next: NextFunction) {
 
         const { id } = request.params
 
         const jobService = new JobService
 
         try {
-            const jobById = await jobService.findById(id)
-            if(!jobById) {
-                console.error("ID não encontrado.")
-            }
-            return response.send(jobService.delete(id))
+            const deleteJobById = await jobService.delete(id)
+            response.send(deleteJobById)
         } catch (error) {
-            response.status(400).send({ message: "Nenhum usuário encontrado com esse ID." })
+            next(error)
         }
 
     }
 
 }
+
+module.exports = JobsController
